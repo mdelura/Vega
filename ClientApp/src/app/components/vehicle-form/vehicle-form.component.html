@@ -1,0 +1,52 @@
+<!-- <form #f="ngForm" (ngSubmit)="save(f.value)"> -->
+<form>
+  <h1>New Vehicle</h1>
+  <!-- Make -->
+  <div class="form-group">
+    <label for="make">Make</label>
+    <select id="make" class="form-control" (change)="onMakeChange()" [(ngModel)]="vehicle.make" name="make">
+      <option value=""></option>
+      <option *ngFor="let m of makes" [value]="m.id">{{ m.name }}</option>
+    </select>
+  </div>
+  <!-- Model -->
+  <div class="form-group">
+    <label for="model">Model</label>
+    <select id="model" class="form-control">
+      <option value=""></option>
+      <option *ngFor="let m of models" [value]="m.id">{{m.name}}</option>
+    </select>
+  </div>
+  <!-- Is this vehicle registered? -->
+  <p>Is this vehicle registered?</p>
+  <div class="radio">
+    <label for="registered">
+      <input type="radio" name="isRegistered" id="registered" value="true">Yes
+    </label><br>
+    <label for="notRegistered">
+      <input type="radio" name="isRegistered" id="notRegistered" value="false">No
+    </label>
+  </div>
+  <!-- Features -->
+  <h2>Features</h2>
+  <div *ngFor="let f of features" class="checkbox">
+    <label for="feature{{f.id}}">
+      <input type="checkbox" id="feature{{f.id}}">{{f.name}}
+    </label>
+  </div>
+  <!-- Contact information -->
+  <h2>Contact</h2>
+  <div class="form-group">
+    <label for="contactName">Name</label>
+    <input type="text" class="form-control" id="contactName" placeholder="Enter Name">
+  </div>
+  <div class="form-group">
+    <label for="contactPhone">Phone</label>
+    <input type="tel" class="form-control" id="contactPhone" placeholder="Enter Phone Number">
+  </div>
+  <div class="form-group">
+    <label for="contactEmail">Email</label>
+    <input type="email" class="form-control" id="contactEmail" placeholder="Enter Email">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
