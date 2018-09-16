@@ -16,6 +16,11 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { VehicleFormComponent } from './components/vehicle-form/vehicle-form.component';
 import { VehicleService } from './services/vehicle.service';
 import { AppErrorHandler } from './app.error-handler';
+import * as Raven from 'raven-js';
+
+Raven
+  .config('https://6a1da94f148d4df986b866fa749c1081@sentry.io/1281806')
+  .install();
 
 @NgModule({
   declarations: [

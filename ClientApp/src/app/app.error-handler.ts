@@ -1,5 +1,6 @@
-import { ErrorHandler, Injectable, Injector, NgZone } from '@angular/core';
+import { ErrorHandler, Injectable, Injector, NgZone, isDevMode } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import * as Raven from 'raven-js';
 
 @Injectable()
 export class AppErrorHandler implements ErrorHandler {
@@ -8,6 +9,12 @@ export class AppErrorHandler implements ErrorHandler {
         private injector: Injector) { }
 
     handleError(error: any): void {
+        if (!isDevMode()) {
+            Raven.captureException(error.originalError || error);
+        } else {
+            throw error;
+        }
+
         this.ngZone.run(() => {
             const toastrService = this.injector.get(ToastrService);
             toastrService.error('An unexpected error happened.', 'Error', { timeOut: 5000 });
