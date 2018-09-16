@@ -40,8 +40,10 @@ Raven
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     RouterModule.forRoot([
-      { path: '', component: HomeComponent },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'vehicles/new', component: VehicleFormComponent },
+      { path: 'vehicles/:id', component: VehicleFormComponent },
+      { path: 'home', component: HomeComponent },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ])

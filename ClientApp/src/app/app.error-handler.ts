@@ -9,15 +9,16 @@ export class AppErrorHandler implements ErrorHandler {
         private injector: Injector) { }
 
     handleError(error: any): void {
+        this.ngZone.run(() => {
+            console.log('Should show exception...');
+            const toastrService = this.injector.get(ToastrService);
+            toastrService.error('An unexpected error happened.', 'Error', { timeOut: 5000 });
+        });
+
         if (!isDevMode()) {
             Raven.captureException(error.originalError || error);
         } else {
             throw error;
         }
-
-        this.ngZone.run(() => {
-            const toastrService = this.injector.get(ToastrService);
-            toastrService.error('An unexpected error happened.', 'Error', { timeOut: 5000 });
-        });
     }
 }
