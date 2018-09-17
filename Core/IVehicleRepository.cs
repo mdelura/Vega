@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Vega.Core.Models;
 
@@ -10,5 +11,6 @@ namespace Vega.Core
         void Remove(Vehicle vehicle);
 
         Task<Vehicle> GetVehicle(int id, bool includeRelated = true);
+        Task<IEnumerable<Vehicle>> GetVehicles();
     }
 }
