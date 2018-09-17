@@ -3,6 +3,8 @@ import { VehicleService } from '../../services/vehicle.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/forkJoin';
+import { SaveVehicle } from '../../models/save-vehicle';
+import { Vehicle } from '../../models/vehicle';
 
 @Component({
   selector: 'app-vehicle-form',
@@ -13,9 +15,17 @@ export class VehicleFormComponent implements OnInit {
   makes: any[];
   models: any[];
   features: any[];
-  vehicle: any = {
+  vehicle: SaveVehicle = {
+    id: 0,
+    makeId: 0,
+    modelId: 0,
+    isRegistered: false,
     features: [],
-    contact : {}
+    contact: {
+      name: '',
+      phone: '',
+      email: '',
+    },
   };
 
   constructor(
@@ -39,7 +49,8 @@ export class VehicleFormComponent implements OnInit {
       this.makes = data[0];
       this.features = data[1];
       if (this.vehicle.id) {
-        this.vehicle = data[2];
+        this.setVehicle(data[2]);
+        this.populateModels();
       }
     }, err => {
       // tslint:disable-next-line:triple-equals
@@ -47,27 +58,26 @@ export class VehicleFormComponent implements OnInit {
         this.router.navigate(['home']);
       }
     });
+  }
 
-    // if (this.vehicle.id) {
-    //   this.vehicleService.getVehicle(this.vehicle.id)
-    //   .subscribe(v => this.vehicle = v, err => {
-    //     // tslint:disable-next-line:triple-equals
-    //     if (err.status == 404) {
-    //       console.log(`Vehicle not found: ${this.vehicle.id}`);
-    //       this.router.navigate(['home']);
-    //     }
-    //   });
-    // }
-
-    // this.vehicleService.getMakes().subscribe(makes => this.makes = makes);
-    // this.vehicleService.getFeatures().subscribe(features => this.features = features);
+  private setVehicle(vehicle: Vehicle) {
+    this.vehicle.id = vehicle.id;
+    this.vehicle.makeId = vehicle.make.id;
+    this.vehicle.modelId = vehicle.model.id;
+    this.vehicle.isRegistered = vehicle.isRegistered;
+    this.vehicle.contact = vehicle.contact;
+    this.vehicle.features = vehicle.features.map(f => f.id);
   }
 
   onMakeChange() {
+    this.populateModels();
+    delete this.vehicle.modelId;
+  }
+
+  private populateModels() {
     // tslint:disable-next-line:triple-equals
     const selectedMake = this.makes.find(m => m.id == this.vehicle.makeId);
     this.models = selectedMake ? selectedMake.models : [];
-    delete this.vehicle.modelId;
   }
 
   onFeatureToggle(featureId, $event) {

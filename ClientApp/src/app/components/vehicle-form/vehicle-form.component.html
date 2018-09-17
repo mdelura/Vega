@@ -25,17 +25,17 @@
   <p>Is this vehicle registered?</p>
   <div class="radio">
     <label for="registered">
-      <input type="radio" name="isRegistered" id="registered" value="true" [(ngModel)]="vehicle.isRegistered">Yes
+      <input type="radio" name="isRegistered" id="registered" [value]="true" [(ngModel)]="vehicle.isRegistered">Yes
     </label><br>
     <label for="notRegistered">
-      <input type="radio" name="isRegistered" id="notRegistered" value="false" [(ngModel)]="vehicle.isRegistered">No
+      <input type="radio" name="isRegistered" id="notRegistered" [value]="false" [(ngModel)]="vehicle.isRegistered">No
     </label>
   </div>
   <!-- Features -->
   <h2>Features</h2>
   <div *ngFor="let f of features" class="checkbox">
-    <label for="feature{{f.id}}" (change)="onFeatureToggle(f.id, $event)">
-      <input type="checkbox" id="feature{{f.id}}">{{f.name}}
+    <label for="feature{{f.id}}">
+      <input type="checkbox" id="feature{{f.id}}" (change)="onFeatureToggle(f.id, $event)" [checked]="vehicle.features.includes(f.id)">{{f.name}}
     </label>
   </div>
   <!-- Contact information -->
@@ -55,6 +55,5 @@
     <input type="email" class="form-control" id="contactEmail" placeholder="Enter Email" [(ngModel)]="vehicle.contact.email" name="contactEmail" required #contactEmail="ngModel">
     <div class="alert alert-danger" *ngIf="contactEmail.touched && !contactEmail.valid">Please specify the contact email.</div>
   </div>
-  <button type="submit" class="btn btn-primary">Save</button>
-  <!-- <button type="submit" class="btn btn-primary" [disabled]="!f.valid">Save</button> -->
+  <button type="submit" class="btn btn-primary" [disabled]="!f.valid">Save</button>
 </form>
