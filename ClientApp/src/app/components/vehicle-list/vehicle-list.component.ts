@@ -11,7 +11,14 @@ import { KeyValuePair } from '../../models/key-value-pair';
 export class VehicleListComponent implements OnInit {
   vehicles: Vehicle[];
   makes: KeyValuePair[];
-  filter: any = {};
+  queryObj: any = {};
+  columns = [
+    { title: 'Id' },
+    { title: 'Contact Name', key: 'contactName', isSortable: true },
+    { title: 'Make', key: 'make', isSortable: true },
+    { title: 'Model', key: 'model', isSortable: true },
+    { },
+  ];
 
   constructor(private vehicleService: VehicleService) { }
 
@@ -22,7 +29,7 @@ export class VehicleListComponent implements OnInit {
   }
 
   private populateVehicles() {
-    this.vehicleService.getVehicles(this.filter)
+    this.vehicleService.getVehicles(this.queryObj)
       .subscribe(vehicles => this.vehicles = vehicles);
   }
 
@@ -31,7 +38,21 @@ export class VehicleListComponent implements OnInit {
   }
 
   resetFilter() {
-    this.filter = {};
+    this.queryObj = {};
     this.onFilterChange();
+  }
+
+  sortBy(columnName) {
+    if (this.queryObj.sortBy === columnName) {
+      console.log(`flipping the sort of ${columnName} to ${!this.queryObj.isSortAscending}`);
+      this.queryObj.isSortAscending = !this.queryObj.isSortAscending;
+    } else {
+      console.log(`sort by ${columnName}`);
+      
+      this.queryObj.sortBy = columnName;
+      this.queryObj.isSortAscending = true;
+    }
+
+    this.populateVehicles();
   }
 }
