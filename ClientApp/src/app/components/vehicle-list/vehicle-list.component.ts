@@ -9,9 +9,12 @@ import { KeyValuePair } from '../../models/key-value-pair';
   styleUrls: ['./vehicle-list.component.css']
 })
 export class VehicleListComponent implements OnInit {
-  vehicles: Vehicle[];
+  private readonly PAGE_SIZE = 3;
+  queryResult: any = {};
   makes: KeyValuePair[];
-  queryObj: any = {};
+  queryObj: any = {
+    pageSize: this.PAGE_SIZE
+  };
   columns = [
     { title: 'Id' },
     { title: 'Contact Name', key: 'contactName', isSortable: true },
@@ -30,15 +33,19 @@ export class VehicleListComponent implements OnInit {
 
   private populateVehicles() {
     this.vehicleService.getVehicles(this.queryObj)
-      .subscribe(vehicles => this.vehicles = vehicles);
+      .subscribe(result => this.queryResult = result);
   }
 
   onFilterChange() {
+    this.queryObj.page = 1;
     this.populateVehicles();
   }
 
   resetFilter() {
-    this.queryObj = {};
+    this.queryObj = {
+      page: 1,
+      pageSize: this.PAGE_SIZE
+    };
     this.onFilterChange();
   }
 
@@ -50,6 +57,11 @@ export class VehicleListComponent implements OnInit {
       this.queryObj.isSortAscending = true;
     }
 
+    this.populateVehicles();
+  }
+
+  onPageChanged(page) {
+    this.queryObj.page = page;
     this.populateVehicles();
   }
 }
