@@ -16,6 +16,7 @@ import { VehicleService } from './services/vehicle.service';
 import { AppErrorHandler } from './app.error-handler';
 import * as Raven from 'raven-js';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
+import { PaginationComponent } from './components/shared/pagination/pagination.component';
 
 Raven
   .config('https://6a1da94f148d4df986b866fa749c1081@sentry.io/1281806')
@@ -27,7 +28,8 @@ Raven
     NavMenuComponent,
     HomeComponent,
     VehicleFormComponent,
-    VehicleListComponent
+    VehicleListComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
