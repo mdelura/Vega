@@ -34,7 +34,7 @@ export class VehicleFormComponent implements OnInit {
     private router: Router,
     private vehicleService: VehicleService,
     private toastrService: ToastrService) {
-      route.params.subscribe(p => this.vehicle.id = +p['id']);
+      route.params.subscribe(p => this.vehicle.id = +p['id'] || 0);
   }
 
   ngOnInit() {
@@ -57,7 +57,7 @@ export class VehicleFormComponent implements OnInit {
     }, err => {
       // tslint:disable-next-line:triple-equals
       if (err.status == 404) {
-        this.router.navigate(['home']);
+        this.router.navigate(['']);
       }
     });
   }
@@ -93,14 +93,11 @@ export class VehicleFormComponent implements OnInit {
 
   submit() {
     if (this.vehicle.id) {
-      console.log('Updating vehicle');
-
       this.vehicleService.update(this.vehicle)
         .subscribe(x => {
           this.toastrService.success('The vehicle was sucessfully updated.', 'Saved', { timeOut: 5000 });
         });
     } else {
-      console.log('Creating vehicle');
       this.vehicleService.create(this.vehicle)
         .subscribe(x => this.toastrService.success('The vehicle was sucessfully added to db.', 'Created', { timeOut: 5000 }));
     }
@@ -110,7 +107,7 @@ export class VehicleFormComponent implements OnInit {
     if (confirm('Are you sure?')) {
       this.vehicleService.delete(this.vehicle.id)
         .subscribe(x => {
-          this.router.navigate(['/home']);
+          this.router.navigate(['']);
         });
     }
   }
