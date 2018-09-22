@@ -102,13 +102,4 @@ export class VehicleFormComponent implements OnInit {
         .subscribe(x => this.toastrService.success('The vehicle was sucessfully added to db.', 'Created', { timeOut: 5000 }));
     }
   }
-
-  delete() {
-    if (confirm('Are you sure?')) {
-      this.vehicleService.delete(this.vehicle.id)
-        .subscribe(x => {
-          this.router.navigate(['']);
-        });
-    }
-  }
 }

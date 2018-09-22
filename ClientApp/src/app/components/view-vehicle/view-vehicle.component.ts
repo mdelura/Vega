@@ -9,7 +9,7 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
   styleUrls: ['./view-vehicle.component.css']
 })
 export class ViewVehicleComponent implements OnInit {
-  vehicle: any = {};
+  vehicle: any;
   vehicleId: number;
   constructor(
     private router: Router,

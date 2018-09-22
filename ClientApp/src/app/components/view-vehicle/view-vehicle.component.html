@@ -5,13 +5,13 @@
     <li role="presentation"><a href="#photos" aria-controls="basic" role="tab" data-toggle="tab">Photos</a></li>
   </ul>
 
-  <div class="tab-content">
+  <div class="tab-content" *ngIf="vehicle">
     <!-- Vehicle -->
     <div role="tabpanel" class="tab-pane active" id="basic">
       <h2>Basics</h2>
       <ul>
-        <li>Make: {{ vehicle.make?.name }}</li>
-        <li>Model: {{ vehicle.model?.name }}</li>
+        <li>Make: {{ vehicle.make.name }}</li>
+        <li>Model: {{ vehicle.model.name }}</li>
         <li>Registered: {{ vehicle.isRegistered ? 'Yes' : 'No' }}
       </ul>
       <h2>Features</h2>
@@ -20,9 +20,9 @@
       </ul>
       <h2>Contact</h2>
       <ul>
-        <li>Contact Name: {{ vehicle.contact?.name }}</li>
-        <li>Contact Phone: {{ vehicle.contact?.phone }}</li>
-        <li>Contact Email: {{ vehicle.contact?.email }}</li>
+        <li>Contact Name: {{ vehicle.contact.name }}</li>
+        <li>Contact Phone: {{ vehicle.contact.phone }}</li>
+        <li>Contact Email: {{ vehicle.contact.email }}</li>
       </ul>
       <br />
       <p>
