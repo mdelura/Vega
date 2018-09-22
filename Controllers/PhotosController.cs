@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
@@ -21,6 +22,8 @@ namespace Vega.Controllers
         private readonly IVehicleRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly int _maxBytes = 10 * 1024^2;
+        private readonly string[] _acceptedFileTypes = { ".jpg", ".jpeg", ".png" };
 
         public PhotosController(
             IHostingEnvironment host,
@@ -41,6 +44,12 @@ namespace Vega.Controllers
 
             if (vehicle == null)
                 return NotFound();
+
+            //Validate file
+            if (file == null) return BadRequest("Null file");
+            if (file.Length == 0) return BadRequest("Empty file");
+            if (file.Length > _maxBytes)  return BadRequest("Max file size exceeded");
+            if (!_acceptedFileTypes.Contains(Path.GetExtension(file.FileName), StringComparer.InvariantCultureIgnoreCase)) return BadRequest("Invalid file type.");
 
             var uploadsFolderPath = Path.Combine(_host.WebRootPath, "uploads");
 
