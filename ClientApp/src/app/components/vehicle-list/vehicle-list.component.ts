@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Vehicle } from '../../models/vehicle';
 import { VehicleService } from '../../services/vehicle.service';
 import { KeyValuePair } from '../../models/key-value-pair';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -23,7 +24,10 @@ export class VehicleListComponent implements OnInit {
     { },
   ];
 
-  constructor(private vehicleService: VehicleService) { }
+  constructor(private vehicleService: VehicleService,
+    private spinnerService: Ng4LoadingSpinnerService) {
+      spinnerService.show();
+     }
 
   ngOnInit() {
     this.vehicleService.getMakes()
@@ -33,7 +37,10 @@ export class VehicleListComponent implements OnInit {
 
   private populateVehicles() {
     this.vehicleService.getVehicles(this.queryObj)
-      .subscribe(result => this.queryResult = result);
+      .subscribe(result => {
+        this.queryResult = result;
+        this.spinnerService.hide();
+      });
   }
 
   onFilterChange() {

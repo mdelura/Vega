@@ -17,6 +17,7 @@ import * as Raven from 'raven-js';
 import { VehicleListComponent } from './components/vehicle-list/vehicle-list.component';
 import { PaginationComponent } from './components/shared/pagination/pagination.component';
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 
 Raven
   .config('https://6a1da94f148d4df986b866fa749c1081@sentry.io/1281806')
@@ -39,6 +40,7 @@ Raven
     CommonModule,
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
+    Ng4LoadingSpinnerModule.forRoot(),
     RouterModule.forRoot([
       { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
       { path: 'vehicles/new', component: VehicleFormComponent },

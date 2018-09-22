@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VehicleService } from '../../services/vehicle.service';
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 @Component({
   selector: 'app-view-vehicle',
@@ -13,7 +14,9 @@ export class ViewVehicleComponent implements OnInit {
   constructor(
     private router: Router,
     private vehicleService: VehicleService,
-    route: ActivatedRoute) {
+    route: ActivatedRoute,
+    private spinnerService: Ng4LoadingSpinnerService) {
+      spinnerService.show();
       route.params.subscribe(p => {
         this.vehicleId = +p['id'];
         if (isNaN(this.vehicleId) || this.vehicleId <= 0) {
@@ -26,7 +29,10 @@ export class ViewVehicleComponent implements OnInit {
   ngOnInit() {
     this.vehicleService.getVehicle(this.vehicleId)
       .subscribe(
-        v => this.vehicle = v,
+        v => {
+          this.vehicle = v;
+          this.spinnerService.hide();
+        },
         err => {
           if (err.status == 404) {
             this.router.navigate(['/vehicles']);
