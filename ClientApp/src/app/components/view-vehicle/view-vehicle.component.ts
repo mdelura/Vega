@@ -4,6 +4,7 @@ import { VehicleService } from '../../services/vehicle.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PhotoService } from '../../services/photo.service';
 import { ProgressService } from '../../services/progress.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-view-vehicle',
@@ -24,7 +25,8 @@ export class ViewVehicleComponent implements OnInit {
     private photoService: PhotoService,
     route: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
-    private progressService: ProgressService) {
+    private progressService: ProgressService,
+    private toastrService: ToastrService) {
       spinnerService.show();
       route.params.subscribe(p => {
         this.vehicleId = +p['id'];
@@ -64,17 +66,19 @@ export class ViewVehicleComponent implements OnInit {
   }
 
   uploadPhoto() {
-    const nativeElement: HTMLInputElement = this.fileInput.nativeElement;
-
     this.progressService.startTracking()
-      .subscribe(progress => {
-        console.log(progress);
-        this.zone.run(() => this.progress = progress);
-      },
-      null,
-      () => this.progress = null);
+    .subscribe(progress => {
+      console.log(progress);
+      this.zone.run(() => this.progress = progress);
+    },
+    null,
+    () => this.progress = null);
 
-    this.photoService.upload(this.vehicleId, nativeElement.files[0])
-      .subscribe(photo => this.photos.push(photo));
+    const nativeElement: HTMLInputElement = this.fileInput.nativeElement;
+    const file = nativeElement.files[0];
+    nativeElement.value = '';
+    this.photoService.upload(this.vehicleId, file)
+      .subscribe(photo => this.photos.push(photo),
+      err => this.toastrService.error(err.text(), 'Error', { timeOut: 5000 }));
   }
 }
