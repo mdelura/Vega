@@ -18,6 +18,7 @@ import { VehicleListComponent } from './components/vehicle-list/vehicle-list.com
 import { PaginationComponent } from './components/shared/pagination/pagination.component';
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { PhotoService } from './services/photo.service';
 
 Raven
   .config('https://6a1da94f148d4df986b866fa749c1081@sentry.io/1281806')
@@ -51,6 +52,7 @@ Raven
   ],
   providers: [
     VehicleService,
+    PhotoService,
     { provide: ErrorHandler, useClass: AppErrorHandler }
   ],
   bootstrap: [AppComponent]
