@@ -12,6 +12,7 @@ import { PhotoService } from '../../services/photo.service';
 export class ViewVehicleComponent implements OnInit {
   vehicle: any;
   vehicleId: number;
+  photos: any[];
   @ViewChild('fileInput') fileInput: ElementRef;
 
   constructor(
@@ -44,6 +45,9 @@ export class ViewVehicleComponent implements OnInit {
           }
         }
       );
+
+    this.photoService.getPhotos(this.vehicleId)
+        .subscribe(photos => this.photos = photos);
   }
 
   delete() {
@@ -58,6 +62,6 @@ export class ViewVehicleComponent implements OnInit {
   uploadPhoto() {
     const nativeElement: HTMLInputElement = this.fileInput.nativeElement;
     this.photoService.upload(this.vehicleId, nativeElement.files[0])
-      .subscribe(x => console.log(x));
+      .subscribe(photo => this.photos.push(photo));
   }
 }

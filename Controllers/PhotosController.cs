@@ -20,29 +20,39 @@ namespace Vega.Controllers
     public class PhotosController : Controller
     {
         private readonly IHostingEnvironment _host;
-        private readonly IVehicleRepository _repository;
+        private readonly IVehicleRepository _vehicleRepository;
+        private readonly IPhotoRepository _photoRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly PhotoSettings _photoSettings;
 
         public PhotosController(
             IHostingEnvironment host,
-            IVehicleRepository repository,
+            IVehicleRepository vehicleRepository,
+            IPhotoRepository photoRepository,
             IUnitOfWork unitOfWork,
             IMapper mapper,
             IOptionsSnapshot<PhotoSettings> options)
         {
             _host = host;
-            _repository = repository;
+            _vehicleRepository = vehicleRepository;
+            _photoRepository = photoRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _photoSettings = options.Value;
         }
 
+        [HttpGet]
+        public async Task<IEnumerable<PhotoResource>> GetPhotos(int vehicleId)
+        {
+            var photos = await _photoRepository.GetPhotos(vehicleId);
+            return _mapper.Map<IEnumerable<Photo>, IEnumerable<PhotoResource>>(photos);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Upload(int vehicleId, IFormFile file)
         {
-            var vehicle = await _repository.GetVehicle(vehicleId, includeRelated: false);
+            var vehicle = await _vehicleRepository.GetVehicle(vehicleId, includeRelated: false);
 
             if (vehicle == null)
                 return NotFound();
