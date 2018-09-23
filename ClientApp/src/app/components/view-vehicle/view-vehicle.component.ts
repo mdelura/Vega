@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, NgZone } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { VehicleService } from '../../services/vehicle.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
@@ -18,6 +18,7 @@ export class ViewVehicleComponent implements OnInit {
   progress: any;
 
   constructor(
+    private zone: NgZone,
     private router: Router,
     private vehicleService: VehicleService,
     private photoService: PhotoService,
@@ -68,7 +69,7 @@ export class ViewVehicleComponent implements OnInit {
     this.progressService.uploadProgress
       .subscribe(progress => {
         console.log(progress);
-        this.progress = progress;
+        this.zone.run(() => this.progress = progress);
       },
       null,
       () => this.progress = null);
