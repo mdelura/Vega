@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { VehicleService } from '../../services/vehicle.service';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PhotoService } from '../../services/photo.service';
+import { ProgressService } from '../../services/progress.service';
 
 @Component({
   selector: 'app-view-vehicle',
@@ -14,13 +15,15 @@ export class ViewVehicleComponent implements OnInit {
   vehicleId: number;
   photos: any[];
   @ViewChild('fileInput') fileInput: ElementRef;
+  progress: any;
 
   constructor(
     private router: Router,
     private vehicleService: VehicleService,
     private photoService: PhotoService,
     route: ActivatedRoute,
-    private spinnerService: Ng4LoadingSpinnerService) {
+    private spinnerService: Ng4LoadingSpinnerService,
+    private progressService: ProgressService) {
       spinnerService.show();
       route.params.subscribe(p => {
         this.vehicleId = +p['id'];
@@ -61,6 +64,15 @@ export class ViewVehicleComponent implements OnInit {
 
   uploadPhoto() {
     const nativeElement: HTMLInputElement = this.fileInput.nativeElement;
+
+    this.progressService.uploadProgress
+      .subscribe(progress => {
+        console.log(progress);
+        this.progress = progress;
+      },
+      null,
+      () => this.progress = null);
+
     this.photoService.upload(this.vehicleId, nativeElement.files[0])
       .subscribe(photo => this.photos.push(photo));
   }

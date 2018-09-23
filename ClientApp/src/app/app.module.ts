@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpModule, BrowserXhr } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -19,6 +19,8 @@ import { PaginationComponent } from './components/shared/pagination/pagination.c
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { PhotoService } from './services/photo.service';
+import { ProgressService } from './services/progress.service';
+import { CustomBrowserXhrService } from './services/custom-browser-xhr.service';
 
 Raven
   .config('https://6a1da94f148d4df986b866fa749c1081@sentry.io/1281806')
@@ -53,7 +55,9 @@ Raven
   providers: [
     VehicleService,
     PhotoService,
-    { provide: ErrorHandler, useClass: AppErrorHandler }
+    ProgressService,
+    { provide: ErrorHandler, useClass: AppErrorHandler },
+    { provide: BrowserXhr, useClass: CustomBrowserXhrService }
   ],
   bootstrap: [AppComponent]
 })
