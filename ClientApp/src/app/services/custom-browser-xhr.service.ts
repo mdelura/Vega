@@ -10,8 +10,8 @@ export class CustomBrowserXhrService extends BrowserXhr {
   build(): XMLHttpRequest {
     const xhr: XMLHttpRequest = super.build();
 
-    xhr.onprogress = event => this.service.downloadProgress.next(this.createProgress(event));
-    xhr.upload.onprogress = event => this.service.uploadProgress.next(this.createProgress(event));
+    xhr.upload.onprogress = event => this.service.notify(this.createProgress(event));
+    xhr.upload.onloadend = () => this.service.endTracking();
 
     return xhr;
   }

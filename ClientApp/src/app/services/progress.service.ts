@@ -3,6 +3,18 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class ProgressService {
-  uploadProgress: Subject<any> = new Subject();
-  downloadProgress: Subject<any> = new Subject();
+  private uploadProgress: Subject<any>;
+
+  startTracking() {
+    this.uploadProgress = new Subject();
+    return this.uploadProgress;
+  }
+
+  notify(progress) {
+    this.uploadProgress.next(progress);
+  }
+
+  endTracking() {
+    this.uploadProgress.complete();
+  }
 }
