@@ -21,6 +21,7 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { PhotoService } from './services/photo.service';
 import { ProgressService } from './services/progress.service';
 import { CustomBrowserXhrService } from './services/custom-browser-xhr.service';
+import { AuthService } from './services/auth.service';
 
 Raven
   .config('https://6a1da94f148d4df986b866fa749c1081@sentry.io/1281806')
@@ -46,6 +47,7 @@ Raven
     Ng4LoadingSpinnerModule.forRoot(),
     RouterModule.forRoot([
       { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
+      { path: 'home', redirectTo: 'vehicles', pathMatch: 'full' },
       { path: 'vehicles/new', component: VehicleFormComponent },
       { path: 'vehicles/edit/:id', component: VehicleFormComponent },
       { path: 'vehicles/:id', component: ViewVehicleComponent },
@@ -53,6 +55,7 @@ Raven
     ])
   ],
   providers: [
+    AuthService,
     VehicleService,
     PhotoService,
     ProgressService,

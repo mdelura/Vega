@@ -22,7 +22,19 @@
                         <span class='glyphicon glyphicon-plus'></span> New Vehicle
                     </a>
                 </li>
+                <div class='clearfix'></div>
+                <li>
+                    <a class="btn" *ngIf="!auth.isAuthenticated() else authenticated" (click)="auth.login()">
+                        <span class='glyphicon glyphicon-user'></span> Log In
+                    </a>
+                    <ng-template #authenticated>
+                        <a class="btn" (click)="auth.logout()">
+                            <span class='glyphicon glyphicon-user'></span> Log Out
+                        </a>
+                    </ng-template>
+                </li>
             </ul>
         </div>
+
     </div>
 </div>
