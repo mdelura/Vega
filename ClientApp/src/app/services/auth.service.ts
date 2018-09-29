@@ -13,7 +13,7 @@ export class AuthService {
     domain: 'vegaprojectmd.eu.auth0.com',
     responseType: 'token id_token',
     redirectUri: 'https://localhost:5001',
-    scope: 'openid email'
+    scope: 'openid email profile'
   });
 
   constructor(public router: Router) {
