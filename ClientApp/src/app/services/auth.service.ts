@@ -20,10 +20,14 @@ export class AuthService {
     this.profile = JSON.parse(localStorage.getItem('profile'));
   }
 
-  public get roles(): string[] {
+  private get roles(): string[] {
     return this.profile
     ? this.profile['https://api.vegamd.com/roles']
     : [];
+  }
+
+  public isInRole(roleName: string): boolean {
+    return this.roles.indexOf(roleName) > -1;
   }
 
   public login(): void {
