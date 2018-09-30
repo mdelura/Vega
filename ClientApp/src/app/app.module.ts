@@ -23,6 +23,8 @@ import { ProgressService } from './services/progress.service';
 import { CustomBrowserXhrService } from './services/custom-browser-xhr.service';
 import { AuthService } from './services/auth.service';
 import { AdminComponent } from './components/admin/admin.component';
+import { AuthGuardService } from './services/auth-guard.service';
+import { AdminAuthGuardService } from './services/admin-auth-guard.service';
 
 Raven
   .config('https://6a1da94f148d4df986b866fa749c1081@sentry.io/1281806')
@@ -53,12 +55,14 @@ Raven
       { path: 'vehicles/new', component: VehicleFormComponent },
       { path: 'vehicles/edit/:id', component: VehicleFormComponent },
       { path: 'vehicles/:id', component: ViewVehicleComponent },
-      { path: 'vehicles', component: VehicleListComponent }
-      { path: 'admin', component: AdminComponent }
+      { path: 'vehicles', component: VehicleListComponent },
+      { path: 'admin', component: AdminComponent, canActivate: [ AdminAuthGuardService ] }
     ])
   ],
   providers: [
     AuthService,
+    AuthGuardService,
+    AdminAuthGuardService,
     VehicleService,
     PhotoService,
     ProgressService,
