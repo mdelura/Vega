@@ -20,6 +20,12 @@ export class AuthService {
     this.profile = JSON.parse(localStorage.getItem('profile'));
   }
 
+  public get roles(): string[] {
+    return this.profile
+    ? this.profile['https://api.vegamd.com/roles']
+    : [];
+  }
+
   public login(): void {
     this.auth0.authorize();
   }
@@ -49,8 +55,7 @@ export class AuthService {
         throw error;
       localStorage.setItem('profile', JSON.stringify(profile));
       this.profile = profile;
-      });
-
+    });
   }
 
   public logout(): void {
