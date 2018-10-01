@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Vega.Core.Models;
 
 namespace Vega.Extensions
 {
@@ -25,6 +26,17 @@ namespace Vega.Extensions
                 queryObj.PageSize = 10; 
 
             return query.Skip((queryObj.Page - 1) * queryObj.PageSize).Take(queryObj.PageSize);
+        }
+
+        public static IQueryable<Vehicle> ApplyFiltering(this IQueryable<Vehicle> query, VehicleQuery vehicleQuery)
+        {
+            if (vehicleQuery.MakeId.HasValue)
+                query = query.Where(v => v.Model.MakeId == vehicleQuery.MakeId.Value);
+
+            if (vehicleQuery.ModelId.HasValue)
+                query = query.Where(v => v.Model.Id == vehicleQuery.ModelId.Value);
+
+            return query;
         }
     }
 }
