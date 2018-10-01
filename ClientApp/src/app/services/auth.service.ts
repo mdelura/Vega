@@ -22,7 +22,7 @@ export class AuthService {
 
   private get roles(): string[] {
     return this.profile
-    ? this.profile['https://api.vegamd.com/roles']
+    ? (this.profile['https://api.vegamd.com/roles'] || [])
     : [];
   }
 
