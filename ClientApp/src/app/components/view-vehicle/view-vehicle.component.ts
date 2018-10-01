@@ -5,11 +5,18 @@ import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 import { PhotoService } from '../../services/photo.service';
 import { ProgressService } from '../../services/progress.service';
 import { ToastrService } from 'ngx-toastr';
+import { BrowserXhr } from '@angular/http';
+import { CustomBrowserXhrService } from '../../services/custom-browser-xhr.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-view-vehicle',
   templateUrl: './view-vehicle.component.html',
-  styleUrls: ['./view-vehicle.component.css']
+  styleUrls: ['./view-vehicle.component.css'],
+  providers: [
+    { provide: BrowserXhr, useClass: CustomBrowserXhrService },
+    ProgressService
+  ]
 })
 export class ViewVehicleComponent implements OnInit {
   vehicle: any;
@@ -26,6 +33,7 @@ export class ViewVehicleComponent implements OnInit {
     route: ActivatedRoute,
     private spinnerService: Ng4LoadingSpinnerService,
     private progressService: ProgressService,
+    private auth: AuthService,
     private toastrService: ToastrService) {
       spinnerService.show();
       route.params.subscribe(p => {

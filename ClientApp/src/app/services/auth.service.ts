@@ -51,7 +51,7 @@ export class AuthService {
     // Set the time that the Access Token will expire at
     const expiresAt = JSON.stringify((authResult.expiresIn * 1000) + new Date().getTime());
     localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('id_token', authResult.idToken);
+    localStorage.setItem('token', authResult.idToken);
     localStorage.setItem('expires_at', expiresAt);
 
     this.auth0.client.userInfo(authResult.accessToken, (error, profile) => {
@@ -65,7 +65,7 @@ export class AuthService {
   public logout(): void {
     // Remove tokens and expiry time from localStorage
     localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
+    localStorage.removeItem('token');
     localStorage.removeItem('expires_at');
     localStorage.removeItem('profile');
     this.profile = null;

@@ -3,6 +3,7 @@ import { Vehicle } from '../../models/vehicle';
 import { VehicleService } from '../../services/vehicle.service';
 import { KeyValuePair } from '../../models/key-value-pair';
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-vehicle-list',
@@ -25,7 +26,8 @@ export class VehicleListComponent implements OnInit {
   ];
 
   constructor(private vehicleService: VehicleService,
-    private spinnerService: Ng4LoadingSpinnerService) {
+    private spinnerService: Ng4LoadingSpinnerService,
+    private auth: AuthService) {
       spinnerService.show();
      }
 

@@ -19,12 +19,11 @@ import { PaginationComponent } from './components/shared/pagination/pagination.c
 import { ViewVehicleComponent } from './components/view-vehicle/view-vehicle.component';
 import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { PhotoService } from './services/photo.service';
-import { ProgressService } from './services/progress.service';
-import { CustomBrowserXhrService } from './services/custom-browser-xhr.service';
 import { AuthService } from './services/auth.service';
 import { AdminComponent } from './components/admin/admin.component';
 import { AuthGuardService } from './services/auth-guard.service';
 import { AdminAuthGuardService } from './services/admin-auth-guard.service';
+import { AUTH_PROVIDERS } from 'angular2-jwt';
 
 Raven
   .config('https://6a1da94f148d4df986b866fa749c1081@sentry.io/1281806')
@@ -52,8 +51,8 @@ Raven
     RouterModule.forRoot([
       { path: '', redirectTo: 'vehicles', pathMatch: 'full' },
       { path: 'home', redirectTo: 'vehicles', pathMatch: 'full' },
-      { path: 'vehicles/new', component: VehicleFormComponent },
-      { path: 'vehicles/edit/:id', component: VehicleFormComponent },
+      { path: 'vehicles/new', component: VehicleFormComponent, canActivate: [ AuthGuardService ] },
+      { path: 'vehicles/edit/:id', component: VehicleFormComponent, canActivate: [ AuthGuardService ] },
       { path: 'vehicles/:id', component: ViewVehicleComponent },
       { path: 'vehicles', component: VehicleListComponent },
       { path: 'admin', component: AdminComponent, canActivate: [ AdminAuthGuardService ] }
@@ -62,12 +61,11 @@ Raven
   providers: [
     AuthService,
     AuthGuardService,
+    AUTH_PROVIDERS,
     AdminAuthGuardService,
     VehicleService,
     PhotoService,
-    ProgressService,
     { provide: ErrorHandler, useClass: AppErrorHandler },
-    { provide: BrowserXhr, useClass: CustomBrowserXhrService }
   ],
   bootstrap: [AppComponent]
 })

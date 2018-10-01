@@ -1,5 +1,8 @@
+using System;
+using System.Security.Cryptography;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,6 +11,8 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Vega.Controllers;
 using Vega.Core;
 using Vega.Core.Models;
 using Vega.Persistence;
@@ -32,6 +37,10 @@ namespace Vega
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper();
             services.AddDbContext<VegaDbContext>(options => options.UseSqlServer(Configuration["ConnectionStrings:Default"]));
+            services.AddAuthorization(options => {
+                options.AddPolicy(Policies.RequireAdminRole, policy => policy.RequireClaim("https://api.vegamd.com/roles", "admin"));
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //Add Authentication Service
@@ -43,7 +52,7 @@ namespace Vega
             }).AddJwtBearer(options =>
             {
                 options.Authority = "https://vegaprojectmd.eu.auth0.com/";
-                options.Audience = "https://api.vegamd.com";
+                options.Audience = "13dZ4PzaxyJRllG1LrVWsbV5nDx67Xsi";
             });
 
             // In production, the Angular files will be served from this directory
